@@ -10,6 +10,9 @@ class Film extends Model
     protected $primaryKey = 'film_id';
     protected $table = 'film';
     public $timestamps = false;
+    public $fillable = [
+        'title', 'language_id', 'replacement_cost', 'rental_duration', 'rental_rate'
+    ];
 
     public function actor()
     {

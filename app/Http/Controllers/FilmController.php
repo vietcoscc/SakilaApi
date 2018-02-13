@@ -41,22 +41,11 @@ class FilmController extends Controller
     public function store(Request $request)
     {
         //
-        if ($request->has('title') && $request->has('language_id')
-            && $request->has('replacement_cost')
-            && $request->has('rental_duration')
-            && $request->has('rental_rate')
-        ) {
-            $film = new Film();
-            $film->title = $request->input('title');
-            $film->language_id = $request->input('language_id');
-            $film->rental_duration = $request->input('rental_duration');
-            $film->rental_rate = $request->input('rental_rate');
-            $film->replacement_cost = $request->input('replacement_cost');
-            $film->save();
-            return '{saved}';
-        } else {
-            return '{Request not containt enough params}';
-        }
+        $data = $request->only('title', 'language_id', 'replacement_cost', 'rental_duration', 'rental_rate');
+        $film = new Film();
+        $film->fill($data);
+        $film->save();
+        return response('{success}',200);
     }
 
     /**
@@ -100,7 +89,6 @@ class FilmController extends Controller
         //
 
         if ($request->has('title') && $request->has('language_id')) {
-
             $title = $request->input('title');
             $language_id = $request->input('language_id');
             if (is_numeric($language_id)) {
@@ -122,34 +110,34 @@ class FilmController extends Controller
     public function destroy($id)
     {
         Film::where('film_id', $id)->delete();
-        return '{deleted item ' . $id . '}';
+        return response($id, 200);
     }
 
     public function getActor($id)
     {
         $film = Film::where('film_id', $id)->first();
         $actor = $film->actor;
-        return $actor;
+        return response($actor, 200);
     }
 
     public function getFilm($id)
     {
         $actor = Actor::find($id);
         $film = $actor->film;
-        return $film;
+        return response($film, 200);
     }
 
     public function getFilmText($id)
     {
         $film = Film::select('film_id', 'title')->where('film_id', $id)->first();
         $filmText = $film->filmText;
-        return $filmText;
+        return response($filmText, 200);
     }
 
     public function getInventory($id)
     {
         $film = Film::select('film_id', 'title')->where('film_id', $id)->first();
         $inventory = $film->inventory;
-        return $inventory;
+        return response($inventory, 200);
     }
 }
