@@ -17,7 +17,9 @@ use Illuminate\Http\Request;
 //    return $request->user();
 //});
 Route::resource('films', 'FilmController');
-Route::get('/actor/{id}', 'FilmController@getActor');
-Route::get('/film/{id}', 'FilmController@getFilm');
-Route::get('/film/text/{id}', 'FilmController@getFilmText');
-Route::get('/film/inventory/{id}', 'FilmController@getInventory');
+Route::group(['prefix'=>'film'],function (){
+    Route::get('/actor/{id}', 'FilmController@getActor');
+    Route::get('/{id}', 'FilmController@getFilm');
+    Route::get('/text/{id}', 'FilmController@getFilmText');
+    Route::get('/inventory/{id}', 'FilmController@getInventory');
+});

@@ -53,8 +53,8 @@ class FilmController extends Controller
             $film->rental_rate = $request->input('rental_rate');
             $film->replacement_cost = $request->input('replacement_cost');
             $film->save();
+            return '{saved}';
         } else {
-            throw new Exception('');
             return '{Request not containt enough params}';
         }
     }
@@ -121,44 +121,35 @@ class FilmController extends Controller
      */
     public function destroy($id)
     {
-        //
         Film::where('film_id', $id)->delete();
         return '{deleted item ' . $id . '}';
     }
 
     public function getActor($id)
     {
-//        echo 'getActor';
         $film = Film::where('film_id', $id)->first();
-
         $actor = $film->actor;
-        foreach ($actor as $a) {
-            echo $a;
-            echo "<hr>";
-        }
-
-
+        return $actor;
     }
 
     public function getFilm($id)
     {
         $actor = Actor::find($id);
         $film = $actor->film;
-        foreach ($film as $f) {
-            echo $f;
-            echo "<hr>";
-        }
+        return $film;
     }
 
     public function getFilmText($id)
     {
-        $film = Film::select('film_id','title')->where('film_id',$id)->first();
+        $film = Film::select('film_id', 'title')->where('film_id', $id)->first();
         $filmText = $film->filmText;
-        echo $filmText;
+        return $filmText;
     }
-    public function getInventory($id){
-        $film = Film::select('film_id','title')->where('film_id',$id)->first();
+
+    public function getInventory($id)
+    {
+        $film = Film::select('film_id', 'title')->where('film_id', $id)->first();
         $inventory = $film->inventory;
-        echo $inventory;
+        return $inventory;
     }
 }
